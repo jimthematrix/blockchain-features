@@ -19,7 +19,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
   * once the vagrant VM is successfully built, go into the VM host by `vagrant ssh`
   * `cd $GOPATH/src/github.com/hyperledger/fabric`
   * `make peer`
-  * start a peer node and pass in the arguments to point the peer node at the Kafka server and topic (substitute "hlevents" with any topic that exists in the Kafka server):
+  * start a peer node and pass in the arguments to point the peer node at the Kafka server and topic (substitute "192.168.99.100" with IP of the docker host, and "hlevents" with any topic that exists in the Kafka server):
 
     `peer/peer node start --kafka-brokers=192.168.99.100:9092 --kafka-topic=hlevents`
 
@@ -37,11 +37,18 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 
     `peer/peer node start`
 
-  * build and start the event listener in fabric/examples/events/block-listener and pass in the following arguments (substitute "hlevents" with any topic that exists in the Kafka server):
+  * build and start the event listener in fabric/examples/events/block-listener and pass in the following arguments (substitute "192.168.99.100" with IP of the docker host, and "hlevents" with any topic that exists in the Kafka server):
 
     `./block-listener -events-address=10.0.2.15:31315 -kafka-brokers=192.168.99.100:9092 -kafka-topic=hlevents`
 
 If you don't have a Kafka server handy, the easiest is to use a docker image, follow the instructions here: [https://github.com/spotify/docker-kafka](https://github.com/spotify/docker-kafka)
+
+Finally, start up a Kafka consumer to observe the messages produced by the peer. One easy way to get a Kafka consumer is installing the GO implementation:
+
+  In your vagrant VM host:
+
+  * `go get github.com/Shopify/sarama/tools/kafka-console-consumer`
+  * `kafka-console-consumer -topic=hlevents -brokers=192.168.99.100:9092`
 
 Once the set up above is complete, you can test by using the "peer" command to submit transactions:
 
