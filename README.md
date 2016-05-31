@@ -8,6 +8,8 @@ Services need to provide fault tolerance. In the case of the eventing system in 
 
 Some preliminary work has been done for the fault tolerance feature in the 2nd case above. The work is saved in a repository forked from the official Hyperledger project: [https://github.com/jimthematrix/fabric](https://github.com/jimthematrix/fabric)
 
+![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/IMG_1695.JPG "Hyperledger support for message queue")
+
 * branch *persistent-events* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
 
   To run this:
