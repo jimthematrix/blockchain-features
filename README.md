@@ -10,7 +10,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 
 ![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
 
-* branch *persistent-events* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
+1. branch *persistent-events* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
 
   To run this:
 
@@ -24,7 +24,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
     `peer/peer node start --kafka-brokers=192.168.99.100:9092 --kafka-topic=hlevents`
 
 
-* branch *persistent-events-1* has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
+2. branch *persistent-events-1* has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
 
   To run this:
 
@@ -43,9 +43,9 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 
 If you don't have a Kafka server handy, the easiest is to use a docker image, follow the instructions here: [https://github.com/spotify/docker-kafka](https://github.com/spotify/docker-kafka)
 
-Finally, start up a Kafka consumer to observe the messages produced by the peer. One easy way to get a Kafka consumer is installing the GO implementation:
+Finally, start up a Kafka consumer to observe the messages produced by the peer (case #1 above) or the event listener (case #2). One easy way to get a Kafka consumer is installing the GO implementation:
 
-  In your vagrant VM host:
+In your vagrant VM host:
 
   * `go get github.com/Shopify/sarama/tools/kafka-console-consumer`
   * `kafka-console-consumer -topic=hlevents -brokers=192.168.99.100:9092`
