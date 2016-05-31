@@ -8,7 +8,7 @@ Services need to provide fault tolerance. In the case of the eventing system in 
 
 Some preliminary work has been done for the fault tolerance feature in the 2nd case above. The work is saved in a repository forked from the official Hyperledger project: [https://github.com/jimthematrix/fabric](https://github.com/jimthematrix/fabric)
 
-* branch "persistent-events" has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
+* branch *persistent-events* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
 
   To run this:
 
@@ -22,7 +22,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
     `peer/peer node start --kafka-brokers=192.168.99.100:9092 --kafka-topic=hlevents`
 
 
-* branch "persistent-events-1" has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
+* branch *persistent-events-1* has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
 
   To run this:
 
