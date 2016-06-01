@@ -10,7 +10,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 
 ![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
 
-1. branch *persistent-events* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
+1. branch *[persistent-events](https://github.com/jimthematrix/fabric/tree/persistent-events)* has one of the approaches to provide integration with a message queue (Apache Kafka), by having the fabric/events/producer package be modified to pump messages into a Kafka topic
 
   To run this:
 
@@ -24,7 +24,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
     `peer/peer node start --kafka-brokers=192.168.99.100:9092 --kafka-topic=hlevents`
 
 
-2. branch *persistent-events-1* has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
+2. branch *[persistent-events-1](https://github.com/jimthematrix/fabric/tree/persistent-events-1)* has another approach, by having the local block eventlistener process do the message pumping into a Kafka topic
 
   To run this:
 
