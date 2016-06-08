@@ -57,7 +57,10 @@ Once the set up above is complete, you can test by using the "peer" command to s
 * `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode invoke -n '<unique ID returned in the command result above>' -c '{"Function":"invoke", "Args": ["a","b","10"]}'`
 
 ### WebSphere MQ Support
-This library requires WebSphere MQ client libraries for C to build and execute.
+Follow the procedure below to build and run the WebSphere MQ support with Hyperledger events.
+
+#### Install Build and Runtime Pre-requisites
+This support requires WebSphere MQ client libraries for C to build and execute.
 
 * Install the MQ Client on the same system where the Hyperledger code resides.  
   * Go to link [http://www-01.ibm.com/support/docview.wss?uid=swg24037500](http://www-01.ibm.com/support/docview.wss?uid=swg24037500)
@@ -66,9 +69,29 @@ This library requires WebSphere MQ client libraries for C to build and execute.
 * After install, double check the library folder needed by cgo linker
   * /opt/mqm/lib64 folder should contain file libmqm.so
 
+#### Build
 As with support for Kafka, events can be pumped into an MQ queue from either the producer (running in the Peer node) or from the event listener (running off the Peer network).
 
-1. branch *[events-listener-mq](https://github.com/jimthematrix/fabric/tree/events-listener-mq) modifies the block event listener in fabric/examples/events/block-listener to pump event messages into a WebSphere MQ queue
+1. branch *[events-producer-mq](https://github.com/jimthematrix/fabric/tree/events-producer-mq) modifies the event producer in fabric/events/producer to pump event messages into a WebSphere MQ queue
+
+  To run this:
+
+  * clone the repo and check out the branch
+  * build the development environment by changing directory to the "fabric/devenv" folder and `vagrant up`
+  * once the vagrant VM is successfully built, go into the VM host by `vagrant ssh`
+  * `cd $GOPATH/src/github.com/hyperledger/fabric`
+  * `make peer`
+    * If you get a build error saying "... Signal: killed", it usually means you don't have enough memory allocated for the vagrant VM. To fix the error, exit vagrant and modify vb.memory value to be at least "1024", and reload the new configuration by using command "vagrant reload"
+  * start a peer node:
+
+    `CORE_LOGGING_LEVEL=debug LD_LIBRARY_PATH=/opt/mqm/lib64/ MQSERVER='HLCHANNEL/TCP/192.168.99.100 1414' peer/peer node start --queue-manager=HL --queue=HL.QUEUE`
+
+    Note: 
+    * substitute `192.168.99.100` with IP of the MQ server
+    * in the value string for MQServer, it's a space b/w the IP and port, rather than a colon
+    * HLCHANNEL, HL and HL.QUEUE are the channel, queue manager and queue names respectively configured on the MQ server. Refer to instructions below for details to define them.
+
+2. branch *[events-listener-mq](https://github.com/jimthematrix/fabric/tree/events-listener-mq) modifies the block event listener in fabric/examples/events/block-listener to pump event messages into a WebSphere MQ queue
 
   To run this:
 
@@ -92,6 +115,7 @@ As with support for Kafka, events can be pumped into an MQ queue from either the
     * in the value string for MQServer, it's a space b/w the IP and port, rather than a colon
     * HLCHANNEL, HL and HL.QUEUE are the channel, queue manager and queue names respectively configured on the MQ server. Refer to instructions below for details to define them.
 
+#### Test Transaction Submissions
 Once the set up above is complete, you can test by using the "peer" command to submit transactions:
 
 * `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode deploy -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Function":"init", "Args": ["a","100", "b", "200"]}'`
