@@ -92,6 +92,15 @@ As with support for Kafka, events can be pumped into an MQ queue from either the
     * in the value string for MQServer, it's a space b/w the IP and port, rather than a colon
     * HLCHANNEL, HL and HL.QUEUE are the channel, queue manager and queue names respectively configured on the MQ server. Refer to instructions below for details to define them.
 
+Once the set up above is complete, you can test by using the "peer" command to submit transactions:
+
+* `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode deploy -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Function":"init", "Args": ["a","100", "b", "200"]}'`
+* `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode invoke -n '<unique ID returned in the command result above>' -c '{"Function":"invoke", "Args": ["a","b","10"]}'`
+
+To check the resulted message that has been put on the queue, launch the following command from the MQ server machine or VM:
+
+* `/opt/mqm/samp/bin/amqsget HL.QUEUE`
+
 #### Set up a WebSphere MQ Queue Manager
 
 * If you don't already have an MQ server, download and install a trial from [http://www.ibm.com/developerworks/downloads/ws/wmq/](http://www.ibm.com/developerworks/downloads/ws/wmq/)
