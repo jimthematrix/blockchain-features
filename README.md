@@ -66,6 +66,8 @@ This library requires WebSphere MQ client libraries for C to build and execute.
 * After install, double check the library folder needed by cgo linker
   * /opt/mqm/lib64 folder should contain file libmqm.so
 
+As with support for Kafka, events can be pumped into an MQ queue from either the producer (running in the Peer node) or from the event listener (running off the Peer network).
+
 1. branch *[events-listener-mq](https://github.com/jimthematrix/fabric/tree/events-listener-mq) modifies the block event listener in fabric/examples/events/block-listener to pump event messages into a WebSphere MQ queue
 
   To run this:
