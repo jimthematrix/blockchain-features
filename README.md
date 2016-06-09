@@ -11,7 +11,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 ![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
 
 ### Kafka Support
-1. branch *[events-producer-kafka](https://github.com/jimthematrix/fabric/tree/events-producer-kafka)* has one of the approaches to provide integration with Apache Kafka, by modifying the fabric/events/producer package to pump messages into a Kafka topic
+1. branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/events-producer-modular)* has one of the approaches to provide integration with Apache Kafka, by modifying the fabric/events/producer package to pump messages into a Kafka topic
 
   To run this:
 
@@ -72,7 +72,7 @@ This support requires WebSphere MQ client libraries for C to build and execute.
 #### Build
 As with support for Kafka, events can be pumped into an MQ queue from either the producer (running in the Peer node) or from the event listener (running off the Peer network).
 
-1. branch *[events-producer-mq](https://github.com/jimthematrix/fabric/tree/events-producer-mq) modifies the event producer in fabric/events/producer to pump event messages into a WebSphere MQ queue
+1. branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/events-producer-modular) modifies the event producer in fabric/events/producer to pump event messages into a WebSphere MQ queue
 
   To run this:
 
