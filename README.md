@@ -38,7 +38,7 @@ For Apache Kafka
 
   Note: substitute "192.168.99.100" with IP of the zookeeper node(s) for the Kafka server/cluster, and substitute "hlevents" with any topic that exists in the Kafka server
 
-* finally, start up a Kafka consumer to observe the messages produced by the peer (case #1 above) or the event listener (case #2). One easy way to get a Kafka consumer is installing the GO implementation:
+* finally, start up a Kafka consumer to observe the messages produced by the peer. One easy way to get a Kafka consumer is installing the GO implementation:
   * in your vagrant VM host:
 
     `go get github.com/Shopify/sarama/tools/kafka-console-consumer`
