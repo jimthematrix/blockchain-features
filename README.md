@@ -62,6 +62,7 @@ For WebSphere MQ
 
   `/opt/mqm/samp/bin/amqsget HL.QUEUE`
 
+* once the set up is complete, follow the [steps here](#test-tx) to submit test transactions and observe the events from the transaction processing displayed by the MQ Get program
 
 ### Enhanced event listener approach
 Another alternative to pumping the messages directly out of the peer node is to enhance the event listener client to connect with the messaging system instead. There are exemplary code below that demonstrates how that can be done for Apache Kafka and WebSphere MQ.
