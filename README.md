@@ -42,6 +42,7 @@ For Apache Kafka
   * in your vagrant VM host:
 
     `go get github.com/Shopify/sarama/tools/kafka-console-consumer`
+    
     `kafka-console-consumer -topic=hlevents -brokers=192.168.99.100:9092`
 
 * once the set up is complete, follow the [steps here](#test-tx) to submit test transactions and observe the events from the transaction processing displayed by the Kafka consumer
