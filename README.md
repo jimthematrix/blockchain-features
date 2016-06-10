@@ -42,7 +42,7 @@ For Apache Kafka
   * in your vagrant VM host:
 
     `go get github.com/Shopify/sarama/tools/kafka-console-consumer`
-    
+
     `kafka-console-consumer -topic=hlevents -brokers=192.168.99.100:9092`
 
 * once the set up is complete, follow the [steps here](#test-tx) to submit test transactions and observe the events from the transaction processing displayed by the Kafka consumer
@@ -66,7 +66,7 @@ For WebSphere MQ
 * once the set up is complete, follow the [steps here](#test-tx) to submit test transactions and observe the events from the transaction processing displayed by the MQ Get program
 
 ### Enhanced event listener approach
-Another alternative to pumping the messages directly out of the peer node is to enhance the event listener client to connect with the messaging system instead. There are exemplary code below that demonstrates how that can be done for Apache Kafka and WebSphere MQ.
+Another alternative, instead of pumping the messages directly out of the peer node, is to enhance the event listener client to connect with the external messaging system instead. There are exemplary code below that demonstrates how that can be done for Apache Kafka and WebSphere MQ.
 
 1. branch *[events-listener-kafka](https://github.com/jimthematrix/fabric/tree/events-listener-kafka)* has the local block event listener process do the message pumping into a Kafka topic
 
