@@ -17,7 +17,7 @@ The interface /github.com/hyperledger/fabric/events/producer.Connector defines t
 * Apache Kafka
 * WebSphere MQ
 
-### Build
+##### Build
 Branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/events-producer-modular)* has both the interface declaration and the extensions. Follow these steps to build the code.
 
   * clone the repo and check out the branch
@@ -28,7 +28,7 @@ Branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/ev
   * `make peer`
     * If you get a build error saying "... Signal: killed", it usually means you don't have enough memory allocated for the vagrant VM. To fix the error, exit vagrant and modify vb.memory value to be at least "1024", and reload the new configuration by using command "vagrant reload"
 
-### Run
+##### Run
 For Apache Kafka
 
 * Set up a Kafka cluster. The easiest way is to use a docker image, follow the instructions here: [https://github.com/spotify/docker-kafka](https://github.com/spotify/docker-kafka)
@@ -141,7 +141,7 @@ After install, first need to make an update to the VM configuration to expose th
   * `start listener(HLLISTENER)` start the listener
 * The server is now ready to take remote connections for incoming messages
 
-#### <a name="test-tx"></a>Test Transaction Submissions
+### <a name="test-tx"></a>Test Transaction Submissions
 Once the set up above is complete, you can test by using the "peer" command to submit transactions:
 
 * `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode deploy -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Function":"init", "Args": ["a","100", "b", "200"]}'`
