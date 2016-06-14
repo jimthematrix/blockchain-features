@@ -12,7 +12,7 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 ![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
 
 ### Extensible Messaging System Support Interface
-The interface /github.com/hyperledger/fabric/events/producer.Connector defines the common behaviors of a message producer for a messaging system like Apache Kafka or WebSphere MQ. Extensions can be built on it to provide integration with an external messaging system. Support for the following systems have been implemented:
+The interface /github.com/hyperledger/fabric/events/producer.Connector defines the common behaviors of a message producer for a messaging system like Apache Kafka or WebSphere MQ. Extensions can be built on it to provide integration with an external messaging system. Support for the following systems have been prototyped in this fork:
 
 * Apache Kafka
 * WebSphere MQ
