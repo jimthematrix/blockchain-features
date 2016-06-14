@@ -26,11 +26,11 @@ type Connector interface {
 }
 ```
 
-`SystemName()` returns the flag value for identifying the external system, such as "kafka", "wmq" (for WebSphere MQ), which informs the framework to load the appropriate implementation
-`RuntimeFlags()` returns the two-dimensional string array that describes the command line flags needed by the Connector implementation, for instance an Apache Kafka connector requires the Kafka broker address string and the topic
-`Initialize()` is called when the events sub-system is initialized, usually connections to the external messaging system is established here
-`Publish()` is called when the event has been triggered to allow the Connectors to pass the event along to the messaging system
-`Close()` is called when the event sub-system is torn down, persistent connections should be closed at this point
+  `SystemName()` returns the flag value for identifying the external system, such as "kafka", "wmq" (for WebSphere MQ), which informs the framework to load the appropriate implementation
+  `RuntimeFlags()` returns the two-dimensional string array that describes the command line flags needed by the Connector implementation, for instance an Apache Kafka connector requires the Kafka broker address string and the topic
+  `Initialize()` is called when the events sub-system is initialized, usually connections to the external messaging system is established here
+  `Publish()` is called when the event has been triggered to allow the Connectors to pass the event along to the messaging system
+  `Close()` is called when the event sub-system is torn down, persistent connections should be closed at this point
 
 Support for the following systems have been prototyped in this fork:
 
