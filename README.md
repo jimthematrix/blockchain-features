@@ -20,13 +20,34 @@ The interface /github.com/hyperledger/fabric/events/producer.Connector defines t
 ##### Build
 Branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/events-producer-modular)* has both the interface declaration and the extensions. Follow these steps to build the code.
 
+If you have an existing vagrant-based development environment:
+
   * clone the repo and check out the branch
-  * build the development environment by changing directory to the "fabric/devenv" folder and `vagrant up`
-  * once the vagrant VM is successfully built, go into the VM host by `vagrant ssh`
+  * change directory to the "fabric/devenv" folder and `vagrant ssh`
   * follow the [instructions here](#mq-redist) to install the client libraries for WebSphere MQ
   * `cd $GOPATH/src/github.com/hyperledger/fabric`
   * `make peer`
     * If you get a build error saying "... Signal: killed", it usually means you don't have enough memory allocated for the vagrant VM. To fix the error, exit vagrant and modify vb.memory value to be at least "1024", and reload the new configuration by using command "vagrant reload"
+
+If you don't have an existing vagrant-based development environment, you need to follow some special steps first to set up the vagrant VM otherwise the vagrant build process (`vagrant up`) will fail.
+
+  * clone the repo and check out the branch
+  * follow these steps to re-build the base image for the vagrant environment
+    * Go to [http://www-01.ibm.com/support/docview.wss?&uid=swg24037500](http://www-01.ibm.com/support/docview.wss?&uid=swg24037500)
+    * Download a client redistributable version corresponding to the MQ server and the OS architecture of the peer node, such as _8.0.0.4-WS-MQC-Redist-LinuxX64_
+    * Make the downloaded archive available via HTTP download. this can be done by firing up a local HTTP file server such as `python -m SimpleHTTPServer <port>` from the directory containing the archive
+    * Open the file `fabric/images/base/scripts/common/setup.sh, replace the IP address and the file name of the following lines according to your set up:
+
+      `wget http://192.168.99.1:8000/8.0.0.4-WS-MQC-Redist-LinuxX64.tar.gz`
+
+      `tar -xvf 8.0.0.4-WS-MQC-Redist-LinuxX64.tar.gz --directory mq-redist`
+
+    * Change directory to `fabric/images/base` and launch command `make vagrant`. The the make script uses the following tools that must be installed first:
+      * json parser: https://stedolan.github.io/jq/
+      * packer tool: https://www.packer.io/
+    * Upon successful completion, the vagrant base image `hyperledger/fabric-baseimage (virtualbox, 0)` will be visible from the output of command "vagrant box list". This will be the basis of the vagrant environment for event producer code.
+  * Change directory to `fabric/devenv` and launch command `USE_LOCAL_BASEIMAGE=true vagrant up` to build the vagrant development environment for the fabric
+  * Upon successful completion, `USE_LOCAL_BASEIMAGE=true vagrant ssh` to log in to the vagrant environment and your fabric peer code will have been built already
 
 ##### Run
 For Apache Kafka
