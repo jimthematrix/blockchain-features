@@ -12,7 +12,27 @@ Some preliminary work has been done for the fault tolerance feature in the 2nd c
 ![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
 
 ### Extensible Messaging System Support Interface
-The interface /github.com/hyperledger/fabric/events/producer.Connector defines the common behaviors of a message producer for a messaging system like Apache Kafka or WebSphere MQ. Extensions can be built on it to provide integration with an external messaging system. Support for the following systems have been prototyped in this fork:
+The interface /github.com/hyperledger/fabric/events/producer.Connector defines the common behaviors of a message producer for a messaging system like Apache Kafka or WebSphere MQ. Extensions can be built on it to provide integration with an external messaging system. 
+
+The interface is designed as follows:
+
+```go
+type Connector interface {
+  SystemName() string
+  RuntimeFlags() [][]string
+  Initialize() error
+  Publish(msg *pb.Event) error
+  Close() error
+}
+```
+
+`SystemName()` returns the flag value for identifying the external system, such as "kafka", "wmq" (for WebSphere MQ), which informs the framework to load the appropriate implementation
+`RuntimeFlags()` returns the two-dimensional string array that describes the command line flags needed by the Connector implementation, for instance an Apache Kafka connector requires the Kafka broker address string and the topic
+`Initialize()` is called when the events sub-system is initialized, usually connections to the external messaging system is established here
+`Publish()` is called when the event has been triggered to allow the Connectors to pass the event along to the messaging system
+`Close()` is called when the event sub-system is torn down, persistent connections should be closed at this point
+
+Support for the following systems have been prototyped in this fork:
 
 * Apache Kafka
 * WebSphere MQ
