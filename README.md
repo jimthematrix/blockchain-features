@@ -54,13 +54,13 @@ If you don't have an existing vagrant-based development environment, you need to
   * clone the repo and check out the branch
   * follow these steps to re-build the base image for the vagrant environment
     * Go to [http://www-01.ibm.com/support/docview.wss?&uid=swg24037500](http://www-01.ibm.com/support/docview.wss?&uid=swg24037500)
-    * Download a client redistributable version corresponding to the MQ server and the OS architecture of the peer node, such as _8.0.0.4-WS-MQC-Redist-LinuxX64_
+  * Download a client version corresponding to the MQ server and the OS architecture of the peer node, such as _8.0.0.4-WS-MQC-LinuxX64_
     * Make the downloaded archive available via HTTP download. this can be done by firing up a local HTTP file server such as `python -m SimpleHTTPServer <port>` from the directory containing the archive
     * Open the file `fabric/images/base/scripts/common/setup.sh, replace the IP address and the file name of the following lines according to your set up:
 
-      `wget http://192.168.99.1:8000/8.0.0.4-WS-MQC-Redist-LinuxX64.tar.gz`
+      `wget http://192.168.99.1:8000/mqc8_8.0.0.4_linuxx86-64.tar.gz`
 
-      `tar -xvf 8.0.0.4-WS-MQC-Redist-LinuxX64.tar.gz --directory mq-redist`
+      `tar -xvf mqc8_8.0.0.4_linuxx86-64.tar.gz --directory mqc`
 
     * Change directory to `fabric/images/base` and launch command `make vagrant`. The the make script uses the following tools that must be installed first:
       * json parser: https://stedolan.github.io/jq/
@@ -154,11 +154,13 @@ Another alternative, instead of pumping the messages directly out of the peer no
 ### <a name="mq-redist"></a>Install Build and Runtime WebSphere MQ Pre-requisites
 This support requires WebSphere MQ client libraries for C to build and execute.
 
-* Download the MQ Client redistributable libraries on the same system where the Hyperledger code resides.
+* Install the MQ Client on the same system where the Hyperledger code resides.
   * Go to [http://www-01.ibm.com/support/docview.wss?&uid=swg24037500](http://www-01.ibm.com/support/docview.wss?&uid=swg24037500)
-  * Download a client redistributable version corresponding to the MQ server and the OS architecture of the peer node, such as _8.0.0.4-WS-MQC-Redist-LinuxX64_
-  * Create a folder `mq-redist` in /home/vagrant directory
-* Set the environment variable LD_LIBRARY_PATH to `/home/vagrant/mq-redist/lib64` (or `lib` for 32-bit systems). This is needed for both compile and execution of the WebSphere MQ support code.
+  * Download a client version corresponding to the MQ server and the OS architecture of the peer node, such as _8.0.0.4-WS-MQC-LinuxX64_
+  * Unzip to a folder and install from the list of rpm's: `sudo rpm -ivh *.rpm`
+  * You may need to install rpm first with `sudo apt-get install rpm`
+* Copy the needed libraries to the folder used by the linker to find shared libraries
+  * `sudo cp /opt/mqm/lib64/* /usr/local/lib`
 
 ### <a name="mq-install"></a>Set up a WebSphere MQ Queue Manager
 If you don't already have an MQ server, download and install a trial from [http://www.ibm.com/developerworks/downloads/ws/wmq/](http://www.ibm.com/developerworks/downloads/ws/wmq/).
