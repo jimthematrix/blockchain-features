@@ -43,6 +43,7 @@ Support for the following systems have been prototyped in this fork:
 ##### Build
 Branch *[events-producer-modular](https://github.com/jimthematrix/fabric/tree/events-producer-modular)* has both the interface declaration and the extensions. Follow these steps to build the code.
 
+<a name="build-steps"></a>
 If you have an existing vagrant-based development environment:
 
   * clone the repo and check out the branch
@@ -176,7 +177,45 @@ The following message queues support have been prototyped:
 ##### Build
 Branch *[async-tx-submission](https://github.com/jimthematrix/fabric/tree/async-tx-submission)* has both the interface declaration and the extensions. Follow these steps to build the code.
 
-*to be continued*
+Follow the same [build steps](#build-steps) as above for persistent events support.
+
+##### Run
+For Apache Kafka
+
+* Set up a Kafka cluster. The easiest way is to use a docker image, follow the instructions here: [https://github.com/spotify/docker-kafka](https://github.com/spotify/docker-kafka)
+* start a peer node and pass in the arguments to point the peer node at the messaging server and topic:
+
+  `CORE_LOGGING_LEVEL=debug peer/peer node start --transactions-queue=kafka --kafka-zookeeper=192.168.99.100:2181 --kafka-topic-async-api=hltxs`
+
+  Note: substitute "192.168.99.100" with IP of the zookeeper node(s) for the Kafka server/cluster, and substitute "hltxs" with any topic that exists in the Kafka server
+
+* finally, start up a Kafka producer to publish the messages for submitting chaincode deploy and invoke transactions. One easy way to get a Kafka consumer is installing the GO implementation:
+  * in your vagrant VM host:
+
+    `go get github.com/Shopify/sarama/tools/kafka-console-producer`
+
+    `kafka-console-producer -topic=hltxs -brokers=192.168.99.100:9092`
+
+* once the set up is complete, use the [messages here](#test-tx-msg) to paste into the producer prompt to submit test transactions and observe the resulted transaction processing
+
+For WebSphere MQ
+
+* Install a WebSphere MQ server and configure a remote queue manager by following [instructions here](#mq-install).
+* start a peer node and pass in the arguments to point the peer node at the messaging server and topic:
+
+  `CORE_LOGGING_LEVEL=debug MQSERVER='HLCHANNEL/TCP/192.168.99.100 1414' peer/peer node start --transactions-queue=wmq --queue-manager=HL --queue=HL.QUEUE`
+
+  Note: 
+  * substitute `192.168.99.100` with IP of the MQ server
+  * in the value string for MQServer, it's a space b/w the IP and port, rather than a colon
+  * HLCHANNEL, HL and HL.QUEUE are the channel, queue manager and queue names respectively configured on the MQ server. Refer to instructions below for details to define them.
+
+* to publish transaction messages, launch the following command from the MQ server machine or VM:
+
+  `/opt/mqm/samp/bin/amqsput HL.QUEUE`
+
+* once the set up is complete, use the [messages here](#test-tx-msg) to paste into the put prompt above to submit test transactions and observe the resulted transaction processing
+
 
 ## Appendix
 ### <a name="mq-redist"></a>Install Build and Runtime WebSphere MQ Pre-requisites
@@ -213,9 +252,24 @@ After install, first need to make an update to the VM configuration to expose th
   * `start listener(HLLISTENER)` start the listener
 * The server is now ready to take remote connections for incoming messages
 
-### <a name="test-tx"></a>Test Transaction Submissions
+### <a name="test-tx"></a>Test Transaction Submissions From Command Line
 Once the set up above is complete, you can test by using the "peer" command to submit transactions:
 
 * `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode deploy -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Function":"init", "Args": ["a","100", "b", "200"]}'`
 * `CORE_PEER_ADDRESS=10.0.2.15:30303 ./peer chaincode invoke -n '<unique ID returned in the command result above>' -c '{"Function":"invoke", "Args": ["a","b","10"]}'`
 
+### <a name="test-tx-msg"></a>Test Transaction Submissions Using Messages
+Use the following messages in JSON format to publish to the message queue in order to test transaction submissions:
+
+Chaincode deploy:
+
+```json
+{"jsonrpc": "2.0", "method": "deploy", "params": {"type": 1, "chaincodeID":{"path":"github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02"}, "ctorMsg": {"function":"init", "args":["a", "100", "b", "200"]}}, "id": 1}
+```
+
+Chaincode invoke:
+
+```json
+{"jsonrpc": "2.0", "method": "invoke", "params": {"type": 1, "chaincodeID":{"name":"mycc"}, "ctorMsg": {"function":"invoke", "args":["a", "b", "10"]}}, "id": 3}
+```
+_Note_: substitute chaincode name ("mycc") with the unique name returned by the deploy. If the chaincode is submitted using a message queue above, the resulted ID can be obtained from the event listener (refer to the [instructions](https://github.com/hyperledger/fabric/tree/master/examples/events/block-listener) here to attach a simple event listener)
