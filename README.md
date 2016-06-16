@@ -1,7 +1,10 @@
 # blockchain-features
 Sandbox for developing features contributed to Hyperledger
 
-## Persistent Blockchain Events
+* [Persistent Blockchain Events](#feature-events) (incubating)
+* [Asynchronous Transaction Submission](#feature-async) (incubating)
+
+## <a name="feature-events"></a>Persistent Blockchain Events
 Services need to provide fault tolerance. In the case of the eventing system in Hyperledger, both the event source (the network made up of the validating peers) and event listeners must be fault tolerant such that: 
 
 * if one validating peer crashed, the event listener may still get events from the network
@@ -151,6 +154,26 @@ Another alternative, instead of pumping the messages directly out of the peer no
     * in the value string for MQServer, it's a space b/w the IP and port, rather than a colon
     * HLCHANNEL, HL and HL.QUEUE are the channel, queue manager and queue names respectively configured on the MQ server. Refer to instructions below for details to define them.
 
+## <a name="feature-async"></a>Asynchronous Transactions API
+The asynchronous transactions API allows transactions to be submitted asynchronously via a message queue, to compensate for the speed gap b/w client submitting transactions and the Blockchain network's processing and committing the transactions.
+
+Support for different message queues is extensible via the following interface:
+
+```go
+type Connector interface {
+  SystemName() string
+  RuntimeFlags() [][]string
+  Start() error
+  Close() error
+}
+```
+
+The following message queues support have been prototyped:
+
+* Apache Kafka
+* WebSphere MQ
+
+## Appendix
 ### <a name="mq-redist"></a>Install Build and Runtime WebSphere MQ Pre-requisites
 This support requires WebSphere MQ client libraries for C to build and execute.
 
