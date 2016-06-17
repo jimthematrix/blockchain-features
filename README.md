@@ -12,7 +12,7 @@ Services need to provide fault tolerance. In the case of the eventing system in 
 
 Some preliminary work has been done for the fault tolerance feature in the 2nd case above. The work is saved in a repository forked from the official Hyperledger project: [https://github.com/jimthematrix/fabric](https://github.com/jimthematrix/fabric)
 
-![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/hyperledger-ent-int.jpg "Hyperledger support for message queue")
+![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/pic1.jpg "Hyperledger support for message queue")
 
 ### Extensible Messaging System Support Interface
 The interface /github.com/hyperledger/fabric/events/producer.Connector defines the common behaviors of a message producer for a messaging system like Apache Kafka or WebSphere MQ. Extensions can be built on it to provide integration with an external messaging system. 
