@@ -160,6 +160,8 @@ Another alternative, instead of pumping the messages directly out of the peer no
 ## <a name="feature-async"></a>Asynchronous Transactions API
 The asynchronous transactions API allows transactions to be submitted asynchronously via a message queue, to compensate for the speed gap b/w client submitting transactions and the Blockchain network's processing and committing the transactions.
 
+![Hyperledger Async Transaction API](https://github.com/jimthematrix/blockchain-features/blob/master/events/pic3.jpg "Hyperledger Async Transaction API")
+
 Support for different message queues is extensible via the following interface:
 
 ```go
