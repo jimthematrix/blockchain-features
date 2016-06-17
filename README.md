@@ -113,6 +113,8 @@ For WebSphere MQ
 ### Enhanced event listener approach
 Another alternative, instead of pumping the messages directly out of the peer node, is to enhance the event listener client to connect with the external messaging system instead. There are exemplary code below that demonstrates how that can be done for Apache Kafka and WebSphere MQ.
 
+![Hyperledger support for message queue](https://github.com/jimthematrix/blockchain-features/blob/master/events/pic2.jpg "Hyperledger support for message queue")
+
 1. branch *[events-listener-kafka](https://github.com/jimthematrix/fabric/tree/events-listener-kafka)* has the local block event listener process do the message pumping into a Kafka topic
 
   To build and run this:
