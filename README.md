@@ -106,7 +106,7 @@ For WebSphere MQ
 
 * to check the resulted message that has been put on the queue, launch the following command from the MQ server machine or VM:
 
-  `/opt/mqm/samp/bin/amqsget HL.QUEUE`
+  `/opt/mqm/samp/bin/amqsget HL.QUEUE HL`
 
 * once the set up is complete, follow the [steps here](#test-tx) to submit test transactions and observe the events from the transaction processing displayed by the MQ Get program
 
@@ -216,7 +216,7 @@ For WebSphere MQ
 
 * to publish transaction messages, launch the following command from the MQ server machine or VM:
 
-  `/opt/mqm/samp/bin/amqsput HL.QUEUE`
+  `/opt/mqm/samp/bin/amqsput HL.QUEUE HL`
 
 * once the set up is complete, use the [messages here](#test-tx-msg) to paste into the put prompt above to submit test transactions and observe the resulted transaction processing
 
@@ -246,7 +246,7 @@ After install, first need to make an update to the VM configuration to expose th
 * Create a Queue Manager: `crtmqm HL`
 * Start the Queue Manager: `strmqm HL`
 * Start the MQ command console to complete the remaining tasks:
-  * `runmqsc`
+  * `runmqsc HL`
   * `define qlocal(HL.QUEUE)` define a new queue dedicated to messages from the Hyperledger network
   * `set authrec objtype(QMGR) principal('vagrant') authadd(CONNECT)` allow the "vagrant" user to connect to the Queue Manager ("HL" defined above which is the target of the command console)
   * `set authrec profile(HL.QUEUE) objtype(QUEUE) principal('vagrant') authadd(PUT,GET)` allow the "vagrant" user to access the queue, this is the user account that the client program will be launch from
