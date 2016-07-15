@@ -289,7 +289,7 @@ To solve this problem, we propose a solution based on a service called "oracle",
 * interact with the outside world
 * provides trust base with a digital signature on the data requested by the smart contract from the external API
 
-##### Design
+#### Design
 A new method has been added to the `core/chaincode/shim/ChaincodeStub` type:
 
 ```go
@@ -300,47 +300,52 @@ The exact function signature is still to be finalized, for instance more paramet
 
 Follow these steps to try out the prototype of the fabric's support for chaincodes calling external APIs without introducing non-determinism, plus a simple oracle service implementaiton.
 
-##### Build
+#### Build
 Branch *[oracle](https://github.com/jimthematrix/fabric/tree/oracle)* has the enhancement to the chaincode shim (core/chaincode/shim/chaincode.go) and docker controller (core/chaincode/chaincode_support.go) to support calling an oracle service (configurable via command line parameter).
 
-Close the repository and launch vagrant from inside the directory "fabric/devenv" with the following command (notice the port mappings):
+Clone the repository and launch vagrant from inside the directory "fabric/devenv" with the following command (notice the port mappings):
 
-`vagrant up`
-
-`vagrant ssh -- -R 3000:localhost:3000 -R 3010:localhost:3010`
+```
+vagrant up
+vagrant ssh -- -R 3000:localhost:3000 -R 3010:localhost:3010
+```
 
 Once inside the vagrant environment, change directory to `/opt/gopath/src/github.com/hyperledger/fabric`. Use `make images` command to build the docker images to pick up the enhanced fabric code.
 
-##### Set up the mockup service API
+#### Set up the mockup service API
 Repository *[chaincode](https://github.com/jimthematrix/chaincode)* contains a mockup oracle service for testing purposes.
 
 From inside the vagrant environment, clone the repository and change directory to "setup/api-server", use the following commands to launch the mockup API server that returns an integer in the format {result: 1}.
 
-`npm install`
-
-`node app.js`
+```
+npm install
+node app.js
+```
 
 Try calling the API http://localhost:3000 and notice that the returned value is incremented by each call. This simple mockup API simulates a situation that calling the same API directly from the blockchain validating peers will cause each peer to arrive at a different state.
 
-##### Set up the oracle service
+#### Set up the oracle service
 From inside the vagrant environment, change directory to "oracle" inside the chaincode folder cloned from above, use the following commands to launch the oracle service prototype.
 
-`npm install`
+```
+npm install
+node app.js
+```
 
-`node app.js`
-
-##### Set up the 4-node Hyperledger network with PBFT and an CA
+#### Set up the 4-node Hyperledger network with PBFT and an CA
 From inside the vagrant environment, change directory to "setup" inside the chaincode folder cloned from above, use the following commands to set up the validating peer nodes and the CA for testing a chaincode that calls an external API via the oracle service.
 
-`docker-compose up membersrvc0`
-`docker-compose up vp0`
-`docker-compose up vp1`
-`docker-compose up vp2`
-`docker-compose up vp3`
+```
+docker-compose up membersrvc0
+docker-compose up vp0
+docker-compose up vp1
+docker-compose up vp2
+docker-compose up vp3
+```
 
 Notice that each docker instance for the peer node (vp0-3) is launched with the following command: `peer node start --oracle-service-url=http://localhost:3010/oracle`, which is how the oracle service is configured on each validating peer (or "endorser" as in V2 architecture vocabulary). This configuration will be passed into each docker instance running the chaincode so that the chaincode execution environment will be able to use that oracle service when "core/chaincode/shim/ChaincodeStub.CallExternalAPI()" is called.
 
-##### Deploy and invoke chaincode calling external API
+#### Deploy and invoke chaincode calling external API
 A modified version of the chaincode_example02.go chaincode has the example using the new method. You can deploy and invoke the chaincode with the following series of commands to test the oracle service:
 
 ```
