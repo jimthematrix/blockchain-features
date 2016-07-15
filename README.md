@@ -3,6 +3,7 @@ Sandbox for developing features contributed to Hyperledger
 
 * [Persistent Blockchain Events](#feature-events) (incubating)
 * [Asynchronous Transaction Submission](#feature-async) (incubating)
+* [External API Invocation via oracle services](#feature-oracle) (incubating)
 
 ## <a name="feature-events"></a>Persistent Blockchain Events
 Services need to provide fault tolerance. In the case of the eventing system in Hyperledger, both the event source (the network made up of the validating peers) and event listeners must be fault tolerant such that: 
