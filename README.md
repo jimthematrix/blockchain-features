@@ -351,7 +351,7 @@ A modified version of the chaincode_example02.go chaincode has the example using
 ```
 CORE_PEER_ADDRESS=172.17.0.3:30303 peer network login lucas
 CORE_SECURITY_ENABLED=true CORE_SECURITY_PRIVACY=true CORE_PEER_ADDRESS=172.17.0.3:30303 peer chaincode deploy -u lucas -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Function":"init", "Args": ["a","100", "b", "200"]}'
-CORE_SECURITY_ENABLED=true CORE_SECURITY_PRIVACY=true CORE_PEER_ADDRESS=172.17.0.3:30303 peer chaincode invoke -u jim -l golang -n _chaincode_ID_returned_above_ -c '{"Function": "invoke", "Args": ["a", "b", "10"]}'
+CORE_SECURITY_ENABLED=true CORE_SECURITY_PRIVACY=true CORE_PEER_ADDRESS=172.17.0.3:30303 peer chaincode invoke -u lucas -l golang -n _chaincode_ID_returned_above_ -c '{"Function": "invoke", "Args": ["a", "b", "10"]}'
 ```
 
 To verify that all the validating peer instances (vp0-3) obtained the same API result when the mockup API is invoked, use the following commands to find out the returned result from each of the validating peers:
